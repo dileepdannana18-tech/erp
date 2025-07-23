@@ -22,6 +22,7 @@ A complete **Employee Resource Planning (ERP)** system built using the **MERN st
 - 🧾 Employee Joining Reports
 - 📈 Dashboard Analytics
 - 🔍 Search & Filter Functionality
+- 🗒️ Report generation (woking on it)
 
 ---
 ## Screenshots
