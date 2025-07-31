@@ -310,7 +310,7 @@ const Login = () => {
                 </Typography>
                 
                 <Typography variant="body1" sx={{ opacity: 0.8, mb: 3 }}>
-                  Sign in to access your account
+                  Email and password is provided as a placeholder
                 </Typography>
               </motion.div>
 
@@ -366,6 +366,7 @@ const Login = () => {
                     label="Email Address"
                     name="email"
                     type="email"
+                    placeholder="admin@gmail.com"
                     value={formData.email}
                     onChange={handleChange}
                     sx={{
@@ -411,6 +412,7 @@ const Login = () => {
                     fullWidth
                     label="Password"
                     name="password"
+                    placeholder="123456"
                     type={showPassword ? 'text' : 'password'}
                     value={formData.password}
                     onChange={handleChange}
