@@ -42,6 +42,7 @@ import {
 } from '@mui/icons-material';
 import { motion } from 'framer-motion';
 import { api } from '../../utils/api';
+import { formatINR } from '../../utils/currency';
 
 const Employees = () => {
   const [employees, setEmployees] = useState([]);
@@ -398,7 +399,7 @@ const Employees = () => {
                           Salary:
                         </Typography>
                         <Typography variant="body2" sx={{ fontWeight: 500 }}>
-                          {employee.salary ? `$${employee.salary}` : '-'}
+                          {formatINR(employee.salary)}
                         </Typography>
                       </Box>
                     </Box>

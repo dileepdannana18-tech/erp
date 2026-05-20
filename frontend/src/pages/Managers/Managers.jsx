@@ -25,6 +25,7 @@ import {
 } from '@mui/material';
 import { Add as AddIcon, Person as PersonIcon, VpnKey as VpnKeyIcon, Edit as EditIcon, Delete as DeleteIcon } from '@mui/icons-material';
 import Tooltip from '@mui/material/Tooltip';
+import { formatINR } from '../../utils/currency';
 
 const Managers = () => {
   const [managers, setManagers] = useState([]);
@@ -283,7 +284,7 @@ const Managers = () => {
                 <TableCell>{manager.position}</TableCell>
                 <TableCell>{manager.joinDate ? new Date(manager.joinDate).toLocaleDateString() : ''}</TableCell>
                 <TableCell>{manager.phone}</TableCell>
-                <TableCell>{manager.salary}</TableCell>
+                <TableCell>{formatINR(manager.salary)}</TableCell>
                 <TableCell>
                   <Tooltip title="Reset Password" arrow>
                     <span>

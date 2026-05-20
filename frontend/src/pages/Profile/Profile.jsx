@@ -22,7 +22,7 @@ import {
   Business as BusinessIcon,
   Work as WorkIcon,
   Phone as PhoneIcon,
-  AttachMoney as MoneyIcon,
+  CurrencyRupee as MoneyIcon,
   LocationOn as LocationIcon,
   Edit as EditIcon,
   Save as SaveIcon,
@@ -35,6 +35,7 @@ import {
 } from '@mui/icons-material';
 import { motion } from 'framer-motion';
 import { api } from '../../utils/api';
+import { formatINR } from '../../utils/currency';
 
 const Profile = () => {
   const theme = useTheme();
@@ -683,7 +684,7 @@ const Profile = () => {
                             Salary
                           </Typography>
                           <Typography variant="h6" sx={{ fontWeight: 600, color: '#48bb78', fontSize: { xs: '0.875rem', md: '1rem' } }}>
-                            {payroll ? `$${payroll.netSalary.toLocaleString()}` : 'Not Set'}
+                            {payroll ? formatINR(payroll.netSalary) : 'Not Set'}
                           </Typography>
                         </Box>
                       </Box>

@@ -16,7 +16,7 @@ import {
   People as PeopleIcon,
   Business as BusinessIcon,
   AccessTime as AccessTimeIcon,
-  AttachMoney as MoneyIcon,
+  CurrencyRupee as MoneyIcon,
   TrendingUp as TrendingUpIcon,
   TrendingDown as TrendingDownIcon,
   Refresh as RefreshIcon,
@@ -31,6 +31,7 @@ import {
 } from '@mui/icons-material';
 import { motion } from 'framer-motion';
 import { useTheme as useCustomTheme } from '../../context/ThemeContext';
+import { formatINR } from '../../utils/currency';
 import { PieChart, Pie, Cell, Tooltip as RechartsTooltip, ResponsiveContainer, BarChart, Bar, XAxis, YAxis, CartesianGrid, Legend, LineChart, Line } from 'recharts';
 
 const AdminDashboard = () => {
@@ -125,7 +126,7 @@ const AdminDashboard = () => {
     },
     {
       title: 'Total Payroll',
-      value: `$${stats.totalPayroll.toLocaleString()}`,
+      value: formatINR(stats.totalPayroll),
       icon: <MoneyIcon />,
       color: 'linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)',
       trend: '+15%',

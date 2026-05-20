@@ -14,7 +14,7 @@ import {
   People,
   Business,
   AccessTime,
-  AttachMoney,
+  CurrencyRupee,
   Security,
   Analytics,
 } from '@mui/icons-material';
@@ -24,7 +24,7 @@ import { useTheme as useCustomTheme } from '../../context/ThemeContext';
 // 3D Cube faces content
 const featureIcons = [
   <People fontSize="large" />, <Business fontSize="large" />, <AccessTime fontSize="large" />,
-  <AttachMoney fontSize="large" />, <Security fontSize="large" />, <Analytics fontSize="large" />
+  <CurrencyRupee fontSize="large" />, <Security fontSize="large" />, <Analytics fontSize="large" />
 ];
 
 const Animated3DCube = ({ themeMode }) => (
@@ -379,7 +379,7 @@ const Animated3DHome = () => {
             { icon: <People fontSize="large" />, title: 'Employee Management', desc: 'Manage your workforce, onboarding, and records.' },
             { icon: <Business fontSize="large" />, title: 'Department Management', desc: 'Organize teams, assign managers, and structure your company.' },
             { icon: <AccessTime fontSize="large" />, title: 'Attendance Tracking', desc: 'Track time, presence, and leave with precision.' },
-            { icon: <AttachMoney fontSize="large" />, title: 'Payroll', desc: 'Automate payroll, taxes, and payslips.' },
+            { icon: <CurrencyRupee fontSize="large" />, title: 'Payroll', desc: 'Automate payroll, taxes, and payslips.' },
             { icon: <Security fontSize="large" />, title: 'Role-Based Access', desc: 'Enterprise-grade security and permissions.' },
             { icon: <Analytics fontSize="large" />, title: 'Analytics', desc: 'Visualize and analyze your business data.' },
           ].map((f, i) => (
@@ -431,7 +431,7 @@ const Animated3DHome = () => {
           {[
             { icon: <Security fontSize="large" />, title: 'Secure & Reliable', desc: 'Your data is protected with enterprise-grade security.' },
             { icon: <Analytics fontSize="large" />, title: 'Insightful Analytics', desc: 'Make smarter decisions with real-time insights.' },
-            { icon: <AttachMoney fontSize="large" />, title: 'Cost Effective', desc: 'Affordable plans for businesses of all sizes.' },
+            { icon: <CurrencyRupee fontSize="large" />, title: 'Cost Effective', desc: 'Affordable plans for businesses of all sizes.' },
             { icon: <People fontSize="large" />, title: 'User Friendly', desc: 'Intuitive design for everyone in your organization.' },
           ].map((f, i) => (
             <motion.div

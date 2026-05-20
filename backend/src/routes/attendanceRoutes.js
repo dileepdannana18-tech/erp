@@ -25,6 +25,9 @@ router.post('/checkin', auth, checkIn);
 // Check out employee (employee can check themselves out)
 router.post('/checkout', auth, checkOut);
 
+// Get own attendance records (any authenticated employee)
+router.get('/my-records/all', auth, getAttendanceByEmployee);
+
 // Get attendance by employee ID (admin, hr, or employee for their own)
 router.get('/employee/:employeeId', auth, getAttendanceByEmployee);
 
@@ -34,8 +37,8 @@ router.get('/:id', auth, authorize('admin', 'hr'), getAttendanceById);
 // Update attendance (admin, hr)
 router.put('/:id', auth, authorize('admin', 'hr'), updateAttendance);
 
-// Delete attendance (admin only)
-router.delete('/:id', auth, authorize('admin'), deleteAttendance);
+// Delete attendance (admin, hr)
+router.delete('/:id', auth, authorize('admin', 'hr'), deleteAttendance);
 
 // Geolocation-based automatic attendance (employee)
 router.post('/auto-geolocation', auth, autoGeolocationAttendance);

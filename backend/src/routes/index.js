@@ -9,6 +9,7 @@ const authRoutes = require('./authRoutes');
 const managerRoutes = require('./managerRoutes');
 const progressRoutes = require('./progressRoutes');
 const userRoutes = require('./userRoutes');
+const ticketRoutes = require('./ticketRoutes');
 
 // Authentication routes
 router.use('/auth', authRoutes);
@@ -33,5 +34,8 @@ router.use('/payroll', payrollRoutes);
 
 // Progress routes
 router.use('/progress', progressRoutes);
+
+// Ticket routes (SLA ticket escalation system)
+router.use('/tickets', ticketRoutes);
 
 module.exports = router; 

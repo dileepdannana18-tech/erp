@@ -1,10 +1,26 @@
 const Attendance = require('../models/Attendance');
 const Employee = require('../models/Employee');
 
+// Helper function to parse date string (YYYY-MM-DD) as UTC midnight
+const parseDateString = (dateString) => {
+  if (!dateString) return null;
+  if (dateString instanceof Date) return dateString;
+  
+  const [year, month, day] = dateString.split('-');
+  return new Date(Date.UTC(parseInt(year), parseInt(month) - 1, parseInt(day)));
+};
+
 // Create a new attendance record
 exports.createAttendance = async (req, res) => {
   try {
-    const attendance = new Attendance(req.body);
+    const body = { ...req.body };
+    
+    // Parse date string to ensure correct timezone handling
+    if (body.date && typeof body.date === 'string') {
+      body.date = parseDateString(body.date);
+    }
+    
+    const attendance = new Attendance(body);
     await attendance.save();
     await attendance.populate('employee', 'name email department');
     res.status(201).json(attendance);
@@ -50,7 +66,7 @@ exports.checkIn = async (req, res) => {
   try {
     const { employeeId } = req.body;
     const today = new Date();
-    today.setHours(0, 0, 0, 0);
+    today.setUTCHours(0, 0, 0, 0);
     
     // Check if attendance record already exists for today
     let attendance = await Attendance.findOne({
@@ -90,7 +106,7 @@ exports.checkOut = async (req, res) => {
   try {
     const { employeeId } = req.body;
     const today = new Date();
-    today.setHours(0, 0, 0, 0);
+    today.setUTCHours(0, 0, 0, 0);
     
     const attendance = await Attendance.findOne({
       employee: employeeId,
@@ -121,12 +137,37 @@ exports.checkOut = async (req, res) => {
 exports.getAttendanceByEmployee = async (req, res) => {
   try {
     const { employeeId } = req.params;
-    const attendance = await Attendance.find({ employee: employeeId })
+    // Use employeeId from params, or if not provided, use logged-in user's ID
+    const userId = employeeId || req.user._id || req.user.id;
+    const userEmail = req.user.email;
+    
+    console.log('[Attendance] Searching for attendance with userId:', userId, 'email:', userEmail);
+
+    // Try to find attendance by User ID first
+    let attendance = await Attendance.find({ employee: userId })
       .populate({
         path: 'employee',
         populate: { path: 'department', select: 'name' }
       })
       .sort({ date: -1 });
+    
+    console.log('[Attendance] Found by User ID:', attendance.length);
+
+    // If no results and we have an email, try to find by Employee with matching email
+    if (attendance.length === 0 && userEmail) {
+      const employeeByEmail = await Employee.findOne({ email: userEmail });
+      if (employeeByEmail) {
+        console.log('[Attendance] Found Employee by email:', employeeByEmail._id);
+        attendance = await Attendance.find({ employee: employeeByEmail._id })
+          .populate({
+            path: 'employee',
+            populate: { path: 'department', select: 'name' }
+          })
+          .sort({ date: -1 });
+        console.log('[Attendance] Found by Employee ID:', attendance.length);
+      }
+    }
+
     res.status(200).json(attendance);
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -136,9 +177,16 @@ exports.getAttendanceByEmployee = async (req, res) => {
 // Update attendance
 exports.updateAttendance = async (req, res) => {
   try {
+    const body = { ...req.body };
+    
+    // Parse date string to ensure correct timezone handling
+    if (body.date && typeof body.date === 'string') {
+      body.date = parseDateString(body.date);
+    }
+    
     const attendance = await Attendance.findByIdAndUpdate(
       req.params.id, 
-      req.body, 
+      body, 
       { new: true, runValidators: true }
     ).populate('employee', 'name email department');
     
@@ -205,7 +253,7 @@ exports.autoGeolocationAttendance = async (req, res) => {
     }
     // Check if already marked today
     const today = new Date();
-    today.setHours(0, 0, 0, 0);
+    today.setUTCHours(0, 0, 0, 0);
     let attendance = await Attendance.findOne({
       employee: employee._id,
       date: { $gte: today, $lt: new Date(today.getTime() + 24 * 60 * 60 * 1000) }

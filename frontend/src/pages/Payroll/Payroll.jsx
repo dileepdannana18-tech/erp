@@ -28,7 +28,7 @@ import {
   Add as AddIcon,
   Edit as EditIcon,
   Delete as DeleteIcon,
-  AttachMoney as MoneyIcon,
+  CurrencyRupee as MoneyIcon,
   Receipt as ReceiptIcon,
   AccountBalance as BankIcon,
   Search as SearchIcon,
@@ -37,6 +37,7 @@ import { motion } from 'framer-motion';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { LocalizationProvider, DatePicker } from '@mui/x-date-pickers';
 import { getUser } from '../../utils/auth';
+import { formatINR } from '../../utils/currency';
 
 const StatusChip = ({ status }) => {
   const theme = useTheme();
@@ -83,6 +84,7 @@ const StatusChip = ({ status }) => {
 };
 
 const StatCard = ({ title, value, icon, color }) => {
+  const displayValue = typeof value === 'number' ? formatINR(value) : value;
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -111,7 +113,7 @@ const StatCard = ({ title, value, icon, color }) => {
                 {title}
               </Typography>
               <Typography variant="h4" component="div" sx={{ fontWeight: 'bold' }}>
-                ${value.toLocaleString()}
+                {displayValue}
               </Typography>
             </Box>
             <Box
@@ -153,6 +155,7 @@ const Payroll = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const theme = useTheme();
   const user = getUser();
+  const apiUrl = import.meta.env.VITE_API_URL;
   const isEmployee = user?.role === 'employee';
   const isManager = user?.role === 'manager';
 
@@ -171,7 +174,7 @@ const Payroll = () => {
   const fetchPayroll = async () => {
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch('http://localhost:5001/api/payroll', {
+      const response = await fetch(`${apiUrl}/api/payroll`, {
         headers: { 'Authorization': `Bearer ${token}` },
       });
       if (response.ok) {
@@ -186,16 +189,9 @@ const Payroll = () => {
   const fetchEmployeePayroll = async () => {
     try {
       const token = localStorage.getItem('token');
-      console.log('[Payroll][DEBUG] User object:', user);
+      console.log('[Payroll][DEBUG] Fetching employee payroll');
       
-      // Always use the user's _id for employees
-      const employeeId = user._id;
-      console.log('[Payroll][DEBUG] Using employeeId:', employeeId);
-      
-      const apiUrl = `http://localhost:5001/api/payroll/employee/${employeeId}`;
-      console.log('[Payroll][DEBUG] Making request to:', apiUrl);
-      
-      const response = await fetch(apiUrl, {
+      const response = await fetch(`${apiUrl}/api/payroll/my-records/all`, {
         headers: { 
           'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json'
@@ -219,7 +215,7 @@ const Payroll = () => {
   const fetchPayees = async () => {
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch('http://localhost:5001/api/users/payees', {
+      const response = await fetch(`${apiUrl}/api/users/payees`, {
         headers: { 'Authorization': `Bearer ${token}` },
       });
       if (response.ok) {
@@ -285,8 +281,8 @@ const Payroll = () => {
     try {
       const token = localStorage.getItem('token');
       const url = selectedRecord
-        ? `http://localhost:5001/api/payroll/${selectedRecord._id}`
-        : 'http://localhost:5001/api/payroll';
+        ? `${apiUrl}/api/payroll/${selectedRecord._id}`
+        : `${apiUrl}/api/payroll`;
       const method = selectedRecord ? 'PUT' : 'POST';
       
       // Ensure we're using the correct employee ID from the form data
@@ -332,7 +328,7 @@ const Payroll = () => {
     if (!window.confirm('Are you sure you want to delete this payroll record?')) return;
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch(`http://localhost:5001/api/payroll/${id}`, {
+      const response = await fetch(`${apiUrl}/api/payroll/${id}`, {
         method: 'DELETE',
         headers: { 'Authorization': `Bearer ${token}` },
       });
@@ -387,12 +383,12 @@ const Payroll = () => {
                           </Typography>
                         </Box>
                         <Typography variant="h5" sx={{ fontWeight: 'bold', color: 'success.main', mb: 1 }}>
-                          ${record.netSalary}
+                          {formatINR(record.netSalary)}
                         </Typography>
                         <Divider sx={{ my: 1 }} />
-                        <Typography variant="body2">Basic Salary: <b>${record.basicSalary}</b></Typography>
-                        <Typography variant="body2">Allowances: <b>${record.allowances}</b></Typography>
-                        <Typography variant="body2">Deductions: <b>${record.deductions}</b></Typography>
+                        <Typography variant="body2">Basic Salary: <b>{formatINR(record.basicSalary)}</b></Typography>
+                        <Typography variant="body2">Allowances: <b>{formatINR(record.allowances)}</b></Typography>
+                        <Typography variant="body2">Deductions: <b>{formatINR(record.deductions)}</b></Typography>
                         <Typography variant="body2" sx={{ mt: 1 }}>Payment Date: {record.paymentDate ? new Date(record.paymentDate).toLocaleDateString() : '-'}</Typography>
                         <Typography variant="body2">Month: {record.month}</Typography>
                         <Typography variant="body2">Year: {record.year}</Typography>
@@ -414,12 +410,12 @@ const Payroll = () => {
                       </Typography>
                     </Box>
                     <Typography variant="h5" sx={{ fontWeight: 'bold', color: 'success.main', mb: 1 }}>
-                      ${record.netSalary}
+                      {formatINR(record.netSalary)}
                     </Typography>
                     <Divider sx={{ my: 1 }} />
-                    <Typography variant="body2">Basic Salary: <b>${record.basicSalary}</b></Typography>
-                    <Typography variant="body2">Allowances: <b>${record.allowances}</b></Typography>
-                    <Typography variant="body2">Deductions: <b>${record.deductions}</b></Typography>
+                    <Typography variant="body2">Basic Salary: <b>{formatINR(record.basicSalary)}</b></Typography>
+                    <Typography variant="body2">Allowances: <b>{formatINR(record.allowances)}</b></Typography>
+                    <Typography variant="body2">Deductions: <b>{formatINR(record.deductions)}</b></Typography>
                     <Typography variant="body2" sx={{ mt: 1 }}>Payment Date: {record.paymentDate ? new Date(record.paymentDate).toLocaleDateString() : '-'}</Typography>
                     <Typography variant="body2">Month: {record.month}</Typography>
                     <Typography variant="body2">Year: {record.year}</Typography>
@@ -554,10 +550,10 @@ const Payroll = () => {
                 {filteredPayroll.map((record) => (
                   <TableRow key={record._id}>
                     <TableCell>{record.employee?.name || 'N/A'}</TableCell>
-                    <TableCell>${record.basicSalary.toLocaleString()}</TableCell>
-                    <TableCell>${record.allowances.toLocaleString()}</TableCell>
-                    <TableCell>${record.deductions.toLocaleString()}</TableCell>
-                    <TableCell>${record.netSalary.toLocaleString()}</TableCell>
+                    <TableCell>{formatINR(record.basicSalary)}</TableCell>
+                    <TableCell>{formatINR(record.allowances)}</TableCell>
+                    <TableCell>{formatINR(record.deductions)}</TableCell>
+                    <TableCell>{formatINR(record.netSalary)}</TableCell>
                     <TableCell>
                       <StatusChip status={record.status} />
                     </TableCell>

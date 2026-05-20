@@ -8,9 +8,18 @@ const routes = require('./src/routes');
 const cron = require('node-cron');
 const Employee = require('./src/models/Employee');
 const Attendance = require('./src/models/Attendance');
+const initiateSLAEscalationJob = require('./src/jobs/slaEscalationJob');
 
 // Load environment variables
 dotenv.config();
+
+// Validate required secrets
+const requiredEnv = ['MONGODB_URI', 'JWT_SECRET'];
+const missingEnv = requiredEnv.filter((key) => !process.env[key]);
+if (missingEnv.length) {
+  console.error(`Missing required environment variables: ${missingEnv.join(', ')}`);
+  process.exit(1);
+}
 
 // Connect to MongoDB
 connectDB();
@@ -65,6 +74,9 @@ cron.schedule('0 18 * * *', async () => {
     console.error('Error in daily absentee check:', error);
   }
 });
+
+// Initialize SLA Escalation Job
+initiateSLAEscalationJob();
 
 // Start server
 const PORT = process.env.PORT || 5001;

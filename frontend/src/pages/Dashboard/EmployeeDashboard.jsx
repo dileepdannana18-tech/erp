@@ -1,16 +1,17 @@
 import React from 'react';
 import { Box, Typography, Grid, Card, CardContent, IconButton, Tooltip } from '@mui/material';
-import { useOutletContext } from 'react-router-dom';
+import { useOutletContext, useNavigate } from 'react-router-dom';
 import { useTheme as useCustomTheme } from '../../context/ThemeContext';
 import { Brightness4, Brightness7, AccountCircle, AssignmentInd, MonetizationOn, AccessTime } from '@mui/icons-material';
 
 const summary = [
-  { title: 'My Profile', value: 'View and update your profile', icon: <AccountCircle fontSize="large" color="primary" /> },
-  { title: 'Attendance', value: 'View your attendance records', icon: <AccessTime fontSize="large" color="action" /> },
-  { title: 'Payroll', value: 'View your payroll information', icon: <MonetizationOn fontSize="large" color="success" /> },
+  { title: 'My Profile', value: 'View and update your profile', icon: <AccountCircle fontSize="large" color="primary" />, path: '/app/profile' },
+  { title: 'Attendance', value: 'View your attendance records', icon: <AccessTime fontSize="large" color="action" />, path: '/app/attendance' },
+  { title: 'Payroll', value: 'View your payroll information', icon: <MonetizationOn fontSize="large" color="success" />, path: '/app/payroll' },
 ];
 
 const EmployeeDashboard = () => {
+  const navigate = useNavigate();
   const { isDarkMode, toggleTheme } = useCustomTheme();
   const themeMode = isDarkMode ? 'dark' : 'light';
   const { userProfile } = useOutletContext();
@@ -22,8 +23,18 @@ const EmployeeDashboard = () => {
       </Typography>
       <Grid container spacing={3}>
         {summary.map((item) => (
-          <Grid xs={12} sm={6} md={4} key={item.title}>
-            <Card>
+          <Grid item xs={12} sm={6} md={4} key={item.title}>
+            <Card
+              onClick={() => navigate(item.path)}
+              sx={{
+                cursor: 'pointer',
+                transition: 'transform 0.2s, box-shadow 0.2s',
+                '&:hover': {
+                  transform: 'translateY(-4px)',
+                  boxShadow: 6,
+                },
+              }}
+            >
               <CardContent sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                 {item.icon}
                 <Typography variant="h6" sx={{ mt: 1 }}>{item.title}</Typography>

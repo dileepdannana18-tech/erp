@@ -27,7 +27,7 @@ import {
   People as PeopleIcon,
   Business as BusinessIcon,
   AccessTime as AccessTimeIcon,
-  AttachMoney as MoneyIcon,
+  CurrencyRupee as MoneyIcon,
   AccountCircle as AccountCircleIcon,
   Brightness4,
   Brightness7,
@@ -101,6 +101,7 @@ const Layout = () => {
       { text: 'Departments', icon: <BusinessIcon />, path: '/app/departments' },
       { text: 'Attendance', icon: <AccessTimeIcon />, path: '/app/attendance' },
       { text: 'Payroll', icon: <MoneyIcon />, path: '/app/payroll' },
+      { text: 'Tickets', icon: <AssignmentIcon />, path: '/app/tickets' },
       ...(role === 'admin' ? [{ text: 'Requests', icon: <AssignmentIcon />, path: '/app/requests' }] : []),
     ];
   } else if (role === 'manager') {
@@ -110,6 +111,7 @@ const Layout = () => {
       { text: 'Manage Tasks', icon: <TaskIcon />, path: '/app/manage-tasks' },
       { text: 'Completed Tasks', icon: <CheckCircle />, path: '/app/completed-tasks' },
       { text: 'Payroll', icon: <MoneyIcon />, path: '/app/payroll' },
+      { text: 'Tickets', icon: <AssignmentIcon />, path: '/app/tickets' },
       { text: 'My Profile', icon: <AccountCircleIcon />, path: '/app/profile' },
     ];
   } else if (role === 'employee') {
@@ -118,6 +120,7 @@ const Layout = () => {
       { text: 'My Tasks', icon: <TaskIcon />, path: '/app/my-tasks' },
       { text: 'Attendance', icon: <AccessTimeIcon />, path: '/app/attendance' },
       { text: 'Payroll', icon: <MoneyIcon />, path: '/app/payroll' },
+      { text: 'Tickets', icon: <AssignmentIcon />, path: '/app/tickets' },
       { text: 'My Profile', icon: <AccountCircleIcon />, path: '/app/profile' },
     ];
   }
@@ -276,7 +279,7 @@ const Layout = () => {
 
       <Drawer
         variant={isMobile ? "temporary" : "permanent"}
-        open={isMobile ? mobileOpen : true}
+        open={isMobile ? open : true}
         onClose={handleDrawerToggle}
         ModalProps={{
           keepMounted: true, // Better open performance on mobile.

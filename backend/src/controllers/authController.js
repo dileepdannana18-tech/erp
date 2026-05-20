@@ -62,13 +62,12 @@ exports.login = async (req, res) => {
       return res.status(401).json({ message: 'Invalid credentials' });
     }
 
-    // For employees, check if they exist in the Employee collection
+    // For employees, we still try to locate the Employee record, but login should not fail just because
+    // the user has not yet been linked to a separate Employee document.
     if (user.role === 'employee') {
       const employee = await Employee.findOne({ email: user.email });
       if (!employee) {
-        return res.status(403).json({ 
-          message: 'You are not registered by admin. Please contact your administrator to be added to the system.' 
-        });
+        console.warn(`Employee record missing for user ${user.email}. Proceeding with login using User account.`);
       }
     }
 
