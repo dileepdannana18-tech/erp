@@ -333,7 +333,7 @@ const Departments = () => {
   });
   const [searchTerm, setSearchTerm] = useState('');
   const theme = useTheme();
-  const apiUrl = import.meta.env.VITE_API_URL;
+  const apiUrl = import.meta.env.VITE_API_URL || '';
 
   // Fetch departments and employees on component mount
   useEffect(() => {

@@ -46,7 +46,7 @@ const Login = () => {
   const [loading, setLoading] = useState(false);
 
   const isDark = theme.palette.mode === 'dark';
-  const apiUrl = import.meta.env.VITE_API_URL;
+  const apiUrl = import.meta.env.VITE_API_URL || '';
 
   // Clear any existing tokens when component mounts
   useEffect(() => {

@@ -38,7 +38,7 @@ const Tickets = () => {
   const [error, setError] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
   const user = useMemo(() => getUser(), []);
-  const apiUrl = import.meta.env.VITE_API_URL;
+  const apiUrl = import.meta.env.VITE_API_URL || '';
 
   // Employee state
   const [myReportedTickets, setMyReportedTickets] = useState([]);

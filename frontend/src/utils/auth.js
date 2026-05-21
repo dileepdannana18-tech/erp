@@ -21,7 +21,7 @@ export const validateToken = async () => {
   const token = localStorage.getItem('token');
   if (!token) return false;
 
-  const apiUrl = import.meta.env.VITE_API_URL;
+  const apiUrl = import.meta.env.VITE_API_URL || '';
 
   try {
     const response = await fetch(`${apiUrl}/api/auth/profile`, {

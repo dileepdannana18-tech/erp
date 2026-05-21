@@ -47,7 +47,7 @@ const Managers = () => {
   const [editOpen, setEditOpen] = useState(false);
   const [editData, setEditData] = useState(null);
   const theme = useTheme();
-  const apiUrl = import.meta.env.VITE_API_URL;
+  const apiUrl = import.meta.env.VITE_API_URL || '';
 
   useEffect(() => {
     fetchManagers();

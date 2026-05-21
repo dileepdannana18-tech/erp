@@ -155,7 +155,7 @@ const Payroll = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const theme = useTheme();
   const user = getUser();
-  const apiUrl = import.meta.env.VITE_API_URL;
+  const apiUrl = import.meta.env.VITE_API_URL || '';
   const isEmployee = user?.role === 'employee';
   const isManager = user?.role === 'manager';
 
