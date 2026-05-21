@@ -50,7 +50,7 @@ const AdminDashboard = () => {
   const [attendance, setAttendance] = useState([]);
   const { isDarkMode, toggleTheme } = useCustomTheme();
   const themeMode = isDarkMode ? 'dark' : 'light';
-  const apiUrl = import.meta.env.VITE_API_URL || '';
+  const apiUrl = import.meta.env.VITE_API_URL;
 
   useEffect(() => {
     fetchAllStats();
